@@ -1,0 +1,62 @@
+TRILLAL — Primera etapa: inicio de sesión, registro y perfil
+========================================================
+
+ESTE PAQUETE NO REQUIERE NUEVAS TABLAS, VISTAS NI TRIGGERS.
+Usa la tabla "usuarios" de la versión 2 que ya importaste.
+
+1) Abre el panel de ByetHost → MySQL Databases.
+   Copia el servidor MySQL (host), el nombre exacto de tu base,
+   el usuario MySQL y su contraseña. No uses la clave de WordPress
+   ni el usuario del panel FTP salvo que coincida con el usuario MySQL.
+
+2) Edita config/db.php, reemplazando LOS CUATRO valores de ejemplo.
+   Puedes editarlo en tu computadora con VS Code.
+   IMPORTANTE: mantenlo privado (no compartas tus claves).
+
+3) En el administrador de archivos de ByetHost, entra a htdocs
+   (o a la carpeta web de tu dominio) y SUBE el contenido de este
+   paquete conservando carpetas y nombres. No subas únicamente
+   el ZIP sin descomprimir.
+
+   htdocs/
+     index.php         ← pantalla login y registro
+     login.php         ← verifica contraseñas y abre sesión
+     registro.php      ← crea cuenta y da 0 Cultura
+     inicio.php        ← pantalla privada: nombre y Cultura actuales
+     logout.php        ← cierra sesión
+     config/
+       db.php          ← tus datos de conexión, editar antes
+       bootstrap.php   ← funciones compartidas
+       .htaccess       ← bloquea acceso web a config/
+     assets/
+       css/estilos.css
+       js/app.js
+       img/logo-trillal.png
+
+4) Entra en https://TU_DOMINIO/index.php.
+   A) Regístrate con un nombre de 3–30 caracteres, correo real
+      y contraseña de al menos 8 caracteres. Serás enviado
+      automáticamente a inicio.php.
+   B) Comprueba que tu nombre aparezca en el menú y en el saludo,
+      y que Cultura sea 0.
+   C) Haz clic en Cerrar sesión; inicia sesión otra vez.
+   D) Intenta acceder directamente a inicio.php sin iniciar sesión:
+      debe regresarte a index.php.
+   E) En phpMyAdmin, tabla usuarios → Examinar, verifica que se
+      guardaron el nombre, el correo y el hash de contraseña.
+
+NO es necesario agregar más SQL, ni crear vistas, ni triggers.
+NO modifiques directamente la columna contrasena_hash en phpMyAdmin:
+se genera automáticamente con password_hash().
+La columna cultura ya existe y parte de 0; inicio.php la consulta
+cada vez que recargas la página, por eso refleja los nuevos puntos.
+El usuario se conserva con sesiones PHP en $_SESSION['id_usuario'].
+
+Si falla la conexión, revisa config/db.php, que tu hosting tenga
+PDO MySQL y que el host de MySQL sea exactamente el del panel;
+no siempre es 'localhost'. No se ha podido probar tu servidor
+ByetHost desde aquí.
+
+IMPORTANTE: Activa HTTPS en tu dominio antes de pedir contraseñas.
+Para concursos en tiempo real, las salas y recompensas se integrarán
+más adelante; esta entrega corresponde a la PRIMERA PANTALLA.
